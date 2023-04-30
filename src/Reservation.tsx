@@ -23,12 +23,13 @@ export default function Reservation(
     selectedslotId: string,
     setSelectedslotId: React.Dispatch<React.SetStateAction<string>>,
     setSelectedSchedule: React.Dispatch<React.SetStateAction<number>>,
+    setSelectedScheduleEndTime: React.Dispatch<React.SetStateAction<number>>,
   }
 ) {
   // const [date, setDate] = React.useState<Dayjs>(dayjs());
   const tomorrow = dayjs().add(1, 'day').startOf('day');
-  const { business, isLoadingBusiness, businessError } = useFetchBusiness('5cb537a3-48ad-4ec3-9f24-c6a569c89013');
-  const { date, setDate, selectedBranchId, setSelectedBranchId, selectedslotId, setSelectedslotId, setSelectedSchedule } = props;
+  const { business, isLoadingBusiness, businessError } = useFetchBusiness('e0136bde-602e-46b2-8a77-a553da947bba');
+  const { date, setDate, selectedBranchId, setSelectedBranchId, selectedslotId, setSelectedslotId, setSelectedSchedule, setSelectedScheduleEndTime } = props;
   const [selectedBranchIndex, setSelectedBranchIndex] = React.useState(0);
 
   const generateBranchButtons = () => {
@@ -74,9 +75,10 @@ export default function Reservation(
   // const { schedules, isLoadingSchedules, schedulesError } = useFetchSchedules(selectedBranchId, 1681660800000, 1681743600000);
 
   const generateTimeButtons = () => {
-    const handleScheduleButtonClick = (slotId: string, startTime: number) => {
+    const handleScheduleButtonClick = (slotId: string, startTime: number, endTime: number) => {
       setSelectedslotId(slotId);
       setSelectedSchedule(startTime)
+      setSelectedScheduleEndTime(endTime)
     };
 
     if (isLoadingSchedules) {
@@ -112,7 +114,7 @@ export default function Reservation(
               variant="outlined"
             >
               <Button
-                onClick={() => handleScheduleButtonClick(schedule.slotId, schedule.startTime)}
+                onClick={() => handleScheduleButtonClick(schedule.slotId, schedule.startTime, schedule.endTime)}
                 variant={selectedslotId === schedule.slotId ? "contained" : "outlined"}
               >
                 {dayjs(schedule.startTime).format('HH:mm')}

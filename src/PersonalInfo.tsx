@@ -28,14 +28,18 @@ export default function Reservation(
     setGender: React.Dispatch<React.SetStateAction<string>>,
     selectedServices: string[],
     setSelectedServices: React.Dispatch<React.SetStateAction<string[]>>,
+    selectedServicesId: string[],
     setSelectedServicesId: React.Dispatch<React.SetStateAction<string[]>>,
     phone: string,
     setPhone: React.Dispatch<React.SetStateAction<string>>,
+    setCounrtryCode: React.Dispatch<React.SetStateAction<string>>,
+    note: string,
+    setNote: React.Dispatch<React.SetStateAction<string>>,
   }
 ) {
-  const { firstName, setFirstName, lastName, setLastName, gender, setGender, selectedServices, setSelectedServices, phone, setPhone } = props;
+  const { firstName, setFirstName, lastName, setLastName, gender, setGender, selectedServices, setSelectedServices, selectedServicesId, setSelectedServicesId, phone, setPhone, setCounrtryCode, note, setNote } = props;
 
-  const { services, isLoading, error } = useFetchServices('41475937-7bf8-4f8f-b06b-ef714b165c68');
+  const { services, isLoading, error } = useFetchServices('84d986f5-bf61-41f1-87ca-cb40d89aea76');
 
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [alertMsg, setAlertMsg] = React.useState('');
@@ -59,10 +63,13 @@ export default function Reservation(
     setSelectedServices(newServices);
   };
 
-  const handleChangeService = (index: number, event: React.ChangeEvent<{ value: string }>) => {
-    const newServices = [...selectedServices];
-    newServices[index] = event.target.value; // 更新指定位置的服務項目的值  
+  const handleChangeService = (index: number, serviceName: string, serviceId: string) => {
+    let newServices = [...selectedServices];
+    let newServicesId = [...selectedServicesId];
+    newServices[index] = (serviceName); // 更新指定位置的服務項目的值 
+    newServicesId[index] = (serviceId); // 更新指定位置的服務項目的值 
     setSelectedServices(newServices);
+    setSelectedServicesId(newServicesId);
   };
 
 
@@ -122,7 +129,7 @@ export default function Reservation(
             defaultCountry="TW"
             onlyCountries={['TW', 'JP']}
             value={phone}
-            onChange={(myPhone) => setPhone(myPhone)}
+            onChange={(myPhone, info) => {setCounrtryCode(info.countryCode ? info.countryCode : '');setPhone(myPhone);console.log(myPhone)}}
             style={{ width: '100%' }} />
         </Grid>
 
@@ -135,21 +142,18 @@ export default function Reservation(
             autoHideDuration={3000}
           />
 
-          {selectedServices.map((service, index) => (
-            <Grid item container spacing={2} xs={12} md={12} key={index} alignItems="center">
+          {selectedServices.map((service, serviceIndex) => (
+            <Grid item container spacing={2} xs={12} md={12} key={serviceIndex} alignItems="center">
               <Grid item md={10} xs={9}>
                 <FormControl fullWidth size="small">
-                  <InputLabel id={`service-label-${index}`}>服務項目</InputLabel>
+                  <InputLabel id={`service-label-${serviceIndex}`}>服務項目</InputLabel>
                   <Select
-                    labelId={`service-label-${index}`}
+                    labelId={`service-label-${serviceIndex}`}
                     value={service}
                     label="服務項目"
-                    onChange={(event) => {
-                      handleChangeService(index, event as React.ChangeEvent<{ value: string }>)
-                    }}
                   >
-                    {services.map((service) => (
-                      <MenuItem key={service.serviceId} value={service.serviceName}>
+                    {services.map((service, index) => (
+                      <MenuItem key={service.serviceId} value={service.serviceName} onClick={() => {handleChangeService(serviceIndex, service.serviceName, service.serviceId);}}>
                         {service.serviceName}
                       </MenuItem>
                     ))}
@@ -157,7 +161,7 @@ export default function Reservation(
                 </FormControl>
               </Grid>
               <Grid item md={1} xs={1}>
-                <IconButton onClick={() => handleDeleteService(index)}>
+                <IconButton onClick={() => handleDeleteService(serviceIndex)}>
                   <DeleteIcon />
                 </IconButton>
                 {/* <Button variant="outlined" onClick={() => handleDeleteService(index)}>-</Button> */}
@@ -181,6 +185,8 @@ export default function Reservation(
             // autoComplete="shipping address-line1"
             variant="outlined"
             size="small"
+            value={note}
+            onChange={(event) => {console.log(event.target.value);setNote(event.target.value)}}
           />
         </Grid>
       </Grid>

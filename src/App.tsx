@@ -56,12 +56,15 @@ export default function Checkout() {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [selectedSlotId, setSelectedSlotId] = React.useState<string>('');
   const [selectedSchedule, setSelectedSchedule] = React.useState<number>(0);
+  const [selectedScheduleEndTime, setSelectedScheduleEndTime] = React.useState<number>(0);
   const [selectedBranchId, setSelectedBranchId] = React.useState('');
   const [date, setDate] = React.useState<Dayjs>(dayjs());
   const [firstName, setFirstName] = React.useState<string>('');
   const [lastName, setLastName] = React.useState<string>('');
   const [gender, setGender] = React.useState('1');
+  const [countryCode, setCountryCode] = React.useState<string>('');
   const [phone, setPhone] = React.useState<string>('');
+  const [note, setNote] = React.useState<string>('');
   const [selectedServices, setSelectedServices] = React.useState(['']);
   const [selectedServicesId, setSelectedServicesId] = React.useState(['']);
 
@@ -78,14 +81,15 @@ export default function Checkout() {
     const bookingData = {
       "branchId": selectedBranchId,
       "slotId": selectedSlotId,
-      "serviceIds": ["b45d4542-2814-4c27-952b-9fc7d9979a78"], //TODO
+      "serviceIds": selectedServicesId,
       "firstName": firstName,
       "lastName": lastName,
       "gender": gender,
-      "mobileCountryCode": "886", //TODO
-      "mobile": '987987987', //TODO
-      "note": "霧眉, 霧唇" //TODO
+      "mobileCountryCode": countryCode,
+      "mobile": phone,
+      "note": note
     }
+    console.log('request: ', bookingData)
     const response = myPostBooking(bookingData);
     console.log('response: ', response)
 
@@ -105,6 +109,7 @@ export default function Checkout() {
           selectedslotId={selectedSlotId}
           setSelectedslotId={setSelectedSlotId}
           setSelectedSchedule={setSelectedSchedule}
+          setSelectedScheduleEndTime={setSelectedScheduleEndTime}
         />;
       case 1:
         return <PersonalInfo
@@ -116,9 +121,13 @@ export default function Checkout() {
           setGender={setGender}
           selectedServices={selectedServices}
           setSelectedServices={setSelectedServices}
+          selectedServicesId={selectedServicesId}
           setSelectedServicesId={setSelectedServicesId}
           phone={phone}
           setPhone={setPhone}
+          setCounrtryCode={setCountryCode}
+          note={note}
+          setNote={setNote}
         />;
       case 2:
         return <Review
@@ -142,6 +151,7 @@ export default function Checkout() {
             appointmentDetails={appointmentDetails.details}
             selectedServices={selectedServices}
             selectedSchedule={selectedSchedule}
+            selectedScheduleEndTime={selectedScheduleEndTime}
             phone={phone}
           />
         </Grid>
@@ -155,8 +165,8 @@ export default function Checkout() {
       setAppointmentDetails({
         ...appointmentDetails, // 将原来的值复制一份
         scheduleName: studioName, // 更新 name 属性的值
-        startTime: new Date(), //TODO
-        endTime: new Date(),
+        startTime: new Date(selectedSchedule),
+        endTime: new Date(selectedScheduleEndTime),
         location: location,
         details: selectedServices.join(', '),
       });

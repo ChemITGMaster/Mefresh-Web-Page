@@ -17,9 +17,10 @@ export default function AppointmentConfirmation(
         phone: string,
         selectedServices: string[],
         selectedSchedule: number | null
+        selectedScheduleEndTime: number | null
     }
 ) {
-    const { firstName, lastName, appointmentStartTime, appointmentEndTime, appointmentScheduleName, appointmentLocation, appointmentDetails, phone, selectedServices, selectedSchedule } = props;
+    const { firstName, lastName, appointmentStartTime, appointmentEndTime, appointmentScheduleName, appointmentLocation, appointmentDetails, phone, selectedServices, selectedSchedule, selectedScheduleEndTime } = props;
 
 
     const datas = [

@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Mefresh-Web-Page/static/css/main.b52d0a38.css",
+    "main.js": "/Mefresh-Web-Page/static/js/main.d30a3099.js",
+    "static/js/988.cc57e482.chunk.js": "/Mefresh-Web-Page/static/js/988.cc57e482.chunk.js",
+    "index.html": "/Mefresh-Web-Page/index.html",
+    "main.b52d0a38.css.map": "/Mefresh-Web-Page/static/css/main.b52d0a38.css.map",
+    "main.d30a3099.js.map": "/Mefresh-Web-Page/static/js/main.d30a3099.js.map",
+    "988.cc57e482.chunk.js.map": "/Mefresh-Web-Page/static/js/988.cc57e482.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b52d0a38.css",
+    "static/js/main.d30a3099.js"
+  ]
+}
